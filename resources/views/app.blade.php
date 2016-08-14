@@ -70,7 +70,9 @@
             });
         </script>
         <script src="{{asset('assets/site/js/bootstrap.js')}}"></script>
+        
         <script src="{{asset('assets/site/plugins/nprogress/nprogress.js')}}"></script>
+        <script src="{{asset('assets/site/plugins/notify/notify.js')}}"></script>
         @show 
 
     </body></html>

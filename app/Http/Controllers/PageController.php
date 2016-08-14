@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Request;
 use App\Http\Controllers\Controller;
 
-class PageController extends Controller {
+class PageController extends Controller
+{
 
     public function index() {
         $file = storage_path() . '/file.json';
@@ -17,11 +18,11 @@ class PageController extends Controller {
         if (Request::ajax()) {
 
             $data = [
-                'id' => substr(time(), -3, 4),
+                'id'      => substr(time(), -3, 4),
                 'product' => \Input::get('product'),
-                'qnt' => \Input::get('qnt'),
-                'price' => number_format(\Input::get('price'), 2),
-                'date' => date('m-d-Y H:i:s')
+                'qnt'     => \Input::get('qnt'),
+                'price'   => number_format(\Input::get('price'), 2),
+                'date'    => date('m-d-Y H:i:s')
             ];
 
 
@@ -29,7 +30,7 @@ class PageController extends Controller {
                 $content = \File::get($file);
                 $tempArray = json_decode($content, TRUE);
                 array_filter($tempArray);
-               
+
                 array_push($tempArray, $data);
                 $jsonData = json_encode($tempArray);
                 \File::put(storage_path() . '/file.json', $jsonData);
@@ -40,7 +41,7 @@ class PageController extends Controller {
             }
             $dataFromFile = \File::get($file);
 
-            return \Response::make($dataFromFile, 200)->header('Content-Type', 'application/json');
+            return \Response::make(['rows' => $dataFromFile, 'msg' => 'Row successfully created.'], 200)->header('Content-Type', 'application/json');
         }
 
         return view('pages.index', compact('contents'));
@@ -55,27 +56,26 @@ class PageController extends Controller {
     }
 
     public function delete($id) {
-        $file = storage_path() . '/file.json';
-        if (file_exists($file)) {
-            $contents = \File::get($file);
-            $contents = json_decode($contents, TRUE);
+        if (Request::ajax()) {
+            $file = storage_path() . '/file.json';
+            if (file_exists($file)) {
+                $contents = \File::get($file);
+                $contents = json_decode($contents, TRUE);
+                $i = 0;
+                foreach ($contents as $key => $content) {
 
-            foreach ($contents as $content) {
-                
-                if (in_array($id, $content)) {  
-                   
-                    unset($content['id']);   
-                    unset($content['product']); 
-                    unset($content['price']); 
-                    unset($content['date']); 
-                    unset($content['qnt']);                    
-                }    
-           
+                    if ($content['id'] == $id) {
+//                    echo '<pre>';print_r($contents);exit;
+                        unset($contents[$key]);
+                    }
+                    $i++;
+                }
+                \File::put(storage_path() . '/file.json', json_encode($contents));
+
+
+//                return redirect('/');
+                return response()->json(['msg' => 'Row successfully delete.'], 200);
             }
-            \File::put(storage_path() . '/file.json', json_encode($contents));
-            
-
-            return redirect('/');
         }
     }
 
