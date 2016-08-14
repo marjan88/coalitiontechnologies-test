@@ -56,7 +56,7 @@ var get_rows = function () {
                 product += "<td>" + item.price + "</td>";
                 product += "<td>" + item.date + "</td>";
                 product += "<td>" + tp.toFixed(2) + "</td>";
-                product += "<td><a data-id='" + item.id + "' data-action='edit' class='btn btn-default btn-sm action' href='edit/" + item.id + "'><i class='fa fa-edit'></i></a></td>";
+//                product += "<td><a data-id='" + item.id + "' data-action='edit' class='btn btn-default btn-sm action' href='edit/" + item.id + "'><i class='fa fa-edit'></i></a></td>";
                 product += "<td><a data-id='" + item.id + "' data-action='delete' class='btn btn-danger btn-sm action' href='delete/" + item.id + "'><i class='fa fa-trash'></i></a></td>";
 
                 product += '</tr>';
