@@ -27,6 +27,7 @@ $(document).ready(function () {
             data: formData,
             success: function (data) {
                 $('#dataTable').empty();
+                 $('#formData').find("input, textarea").val("");
                 get_rows();
                 $.notify(data.msg, "success");
             }
